@@ -46,9 +46,10 @@ class AsciiTable
 	// TODO: Maybe make this public and don't run in constructor
 	private void DrawHeaders()
 	{
-		DrawSlice('╔', '═', '╗', '╦');
-		DrawSlice('║', ' ', '║', '║');
-		DrawSlice('╠', '═', '╣', '╬');
+		DrawSlice('┌', '─', '┐', '┬');
+		DrawSlice('│', ' ', '│', '│');
+		PopulateAboveSlice(headers);
+		DrawSlice('╞', '═', '╡', '╪');
 	}
 
 	public void AddRow(params string[] data)
@@ -57,6 +58,12 @@ class AsciiTable
 		DrawSlice('│', ' ', '│', '│');
 
 		// Populate the table with the data
+		PopulateAboveSlice(data);
+	}
+
+	public void End()
+	{
+		DrawSlice('└', '─', '┘', '┴');
 	}
 
 	private void DrawSlice(char left, char filler, char right, char? separator = null)
@@ -85,5 +92,31 @@ class AsciiTable
 		// then draw the current line
 		Console.CursorLeft = xPosition;
 		Console.WriteLine(line);
+	}
+
+	private void PopulateAboveSlice(string[] data)
+	{
+		// Move back up to the slice that we wanna edit
+		Console.CursorTop--;
+
+		// Loop through every bit of data and chuck
+		// it into the correct header thingy
+		//? 2 because 1 for the border of the table, and 1 for the padding
+		int x = xPosition + 2;
+		for (int i = 0; i < headersWidths.Length; i++)
+		{
+			// Move to the correct X position
+			Console.CursorLeft = x;
+			
+			// Draw the bit of data
+			// TODO: If the data is longer than the allowed stuff then make it end with ...
+			Console.Write(data[i]);
+
+			// Increase the X for the next bit of data
+			x += headersWidths[i];
+		}
+
+		// Move the cursor back down to get to the original position
+		Console.CursorTop++;
 	}
 }

@@ -4,13 +4,14 @@
     {
         AsciiTable table = new AsciiTable(
             new string[] { "test", "lorem ipsum", "kia ora", "hello, world!" },
-            new int[] { 1, 1, 2, 1 },
-            0, Console.WindowWidth
+            new int[] { 1, 1, 1, 1 },
+            10, 70
         );
         table.AddRow("test", "test", "test", "test");
         table.AddRow("test", "test", "test", "test");
         table.AddRow("test", "test", "test", "test");
         table.AddRow("test", "test", "test", "test");
+        table.End();
 
         Console.ReadKey();
     }
