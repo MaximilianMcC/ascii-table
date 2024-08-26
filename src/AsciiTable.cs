@@ -30,6 +30,20 @@ class AsciiTable
 		DrawHeaders();
 	}
 
+	// Draw an ascii table in the centre of the screen with default
+	// weights of all being 1
+	public AsciiTable(params string[] headings)
+	{
+		// TODO: Don't rewrite
+		totalWidth = Console.WindowWidth - (Console.WindowWidth / 5);
+		xPosition = (Console.WindowWidth - totalWidth) / 2;
+
+		headers = headings;
+		int[] weights = Enumerable.Repeat(1, headings.Length).ToArray();
+		headerWidths = CalculateHeaderWidths(weights, totalWidth);
+		DrawHeaders();
+	}
+
 	public void AddRow(params string[] data)
 	{
 		Draw(Populate(Slice('│', ' ', '│', '│'), data));
