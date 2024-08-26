@@ -2,14 +2,19 @@
 {
 	public static void Main(string[] args)
 	{
+		
+		// Example of a table on the right of the screen
 		AsciiTable table = new AsciiTable(
-			new string[] { "test", "lorem ipsum", "kia ora" },
-			new int[] { 1, 2, 1 },
-			10, 95
+			new string[] { "Year level", "Average grade" },
+			new int[] { 1, 2, },
+			Console.WindowWidth / 2,
+			45
 		);
-		table.AddRow("I think this text should be overflowing rn", "I think this text should be overflowing rn", "I think this text should be overflowing rn");
-		table.AddRow("I think this text should be overflowing rn", "I think this text should be overflowing rn", "I think this text should be overflowing rn");
-		table.AddRow("I think this text should be overflowing rn", "I think this text should be overflowing rn", "I think this text should be overflowing rn");
+		table.AddRow("9", "Merit");
+		table.AddRow("10", "Achieved");
+		table.AddRow("11", "Excellence");
+		table.AddRow("12", "Merit");
+		table.AddRow("13", "Achieved");
 		table.End();
 
 		Console.ReadKey();
