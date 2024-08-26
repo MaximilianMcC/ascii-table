@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ascii-table", "ascii-table.csproj", "{3537E172-B4C7-4ED3-A687-5E3B060D95FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ascii-table", "ascii-table.csproj", "{55638D5D-90BA-4584-A527-E513E567BB33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3537E172-B4C7-4ED3-A687-5E3B060D95FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3537E172-B4C7-4ED3-A687-5E3B060D95FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3537E172-B4C7-4ED3-A687-5E3B060D95FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3537E172-B4C7-4ED3-A687-5E3B060D95FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55638D5D-90BA-4584-A527-E513E567BB33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55638D5D-90BA-4584-A527-E513E567BB33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55638D5D-90BA-4584-A527-E513E567BB33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55638D5D-90BA-4584-A527-E513E567BB33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

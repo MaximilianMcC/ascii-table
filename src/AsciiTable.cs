@@ -1,8 +1,11 @@
+using System.Diagnostics;
+using System.Text;
+
 class AsciiTable
 {
 	private int xPosition;
 	private string[] headers;
-	private int[] headersWidths;
+	private int[] headerWidths;
 	private int totalWidth;
 
 	public AsciiTable(string[] headings, int[] weights, int xPosition, int width)
@@ -12,7 +15,7 @@ class AsciiTable
 		this.xPosition = xPosition;
 
 		headers = headings;
-		headersWidths = CalculateHeaderWidths(weights, totalWidth);
+		headerWidths = CalculateHeaderWidths(weights, totalWidth);
 
 		DrawHeaders();
 	}
@@ -42,81 +45,81 @@ class AsciiTable
 		return headerWidths;
 	}
 
-
-	// TODO: Maybe make this public and don't run in constructor
 	private void DrawHeaders()
 	{
-		DrawSlice('┌', '─', '┐', '┬');
-		DrawSlice('│', ' ', '│', '│');
-		PopulateAboveSlice(headers);
-		DrawSlice('╞', '═', '╡', '╪');
+		Draw(Slice('┌', '─', '┬', '┐'));
+		Draw(Populate(Slice('│', ' ', '│', '│'), headers));
+		Draw(Slice('╞', '═', '╪', '╡'));
 	}
 
-	public void AddRow(params string[] data)
+	private StringBuilder Slice(char left, char middle, char separator, char right)
 	{
-		// Draw the initial background line
-		DrawSlice('│', ' ', '│', '│');
+		//? using a string builder because it lets me
+		//? change stuff at an index (don't need to use .Insert)
+		StringBuilder stringBuilder = new StringBuilder();
 
-		// Populate the table with the data
-		PopulateAboveSlice(data);
-	}
+		// Make the initial line thing
+		//? -2 is to account for the left and right characters
+		stringBuilder.Append(left);
+		stringBuilder.Append(middle, totalWidth - 2);
+		stringBuilder.Append(right);
 
-	public void End()
-	{
-		DrawSlice('└', '─', '┘', '┴');
-	}
-
-	private void DrawSlice(char left, char filler, char right, char? separator = null)
-	{
-		// Check for if we have supplied a separator or not
-		if (separator == null) separator = filler;
-
-		// Make the initial "empty" line and also make
-		// sure the width has enough characters removed
-		// so that we can insert the column characters in
-		//? -2 is for the corners
-		int width = (totalWidth - 2) - headersWidths.Length;
-		string line = left + new string(filler, width) + right;
-
-		// Add in all of the header sections (columns)
-		int x = 0;
-		for (int i = 1; i < headersWidths.Length; i++)
+		// Go back and add in all the separators
+		// over the top of the clean line
+		int x = headerWidths[0];
+		for (int i = 1; i < headers.Length; i++)
 		{
-			// TODO: Get rid of the weird as casting to string rubbish
-			// Insert the separator characters
-			line = line.Insert(x + headersWidths[i], ((char)separator).ToString());
-			x += headersWidths[i];
+			// Set the current character to be
+			// a separator one
+			stringBuilder[x] = separator;
+
+			// Increase the X for drawing the
+			// next header thingy
+			x += headerWidths[i];
+		}
+		
+		// Give back the string builder so it can
+		// be edited by something else or drawn
+		return stringBuilder;
+	}
+
+	private StringBuilder Populate(StringBuilder stringBuilder, string[] data)
+	{
+		// Loop over every bit of data
+		//? 2 because there is 1 character padding on the left, and
+		//? also to skip over the border on the left
+		int x = 2;
+		for (int i = 0; i < data.Length; i++)
+		{
+			// First check for if the data can fit
+			// in the space given to it. If it can't
+			// then chuck a '...' on the end of it 
+			if (data[i].Length > headerWidths[i])
+			{
+				//? 7 because space for 3 dots + actual 3 dots + 1 character padding right
+				//? 3 + 3 + 1 = 7
+				Debug.WriteLine(data[i]);
+				data[i] = data[i].Substring(headerWidths[i] - 7) + "...";
+				Debug.WriteLine(data[i]);
+			}
+
+			// Get rid of the characters we're about to replace
+			// and replace them with the new stuff
+			stringBuilder.Remove(x, data[i].Length);
+			stringBuilder.Insert(x, data[i]);
+
+			// Increase the x for the next header
+			x += headerWidths[i];
 		}
 
-		// Set the cursor to the correct position
-		// then draw the current line
+		// Give back our modified string builder thing
+		return stringBuilder;
+	}
+
+	// Draw at the x position
+	private void Draw(StringBuilder text)
+	{
 		Console.CursorLeft = xPosition;
-		Console.WriteLine(line);
-	}
-
-	private void PopulateAboveSlice(string[] data)
-	{
-		// Move back up to the slice that we wanna edit
-		Console.CursorTop--;
-
-		// Loop through every bit of data and chuck
-		// it into the correct header thingy
-		//? 2 because 1 for the border of the table, and 1 for the padding
-		int x = xPosition + 2;
-		for (int i = 0; i < headersWidths.Length; i++)
-		{
-			// Move to the correct X position
-			Console.CursorLeft = x;
-			
-			// Draw the bit of data
-			// TODO: If the data is longer than the allowed stuff then make it end with ...
-			Console.Write(data[i]);
-
-			// Increase the X for the next bit of data
-			x += headersWidths[i];
-		}
-
-		// Move the cursor back down to get to the original position
-		Console.CursorTop++;
+		Console.WriteLine(text);
 	}
 }
