@@ -20,6 +20,16 @@ class AsciiTable
 		DrawHeaders();
 	}
 
+	public void AddRow(params string[] data)
+	{
+		Draw(Populate(Slice('│', ' ', '│', '│'), data));
+	}
+
+	public void End()
+	{
+		Draw(Slice('└', '─', '┴', '┘'));
+	}
+
 	// TODO: Make constructor to make a centre table
 
 	private int[] CalculateHeaderWidths(int[] headerWeights, int totalWidth)
@@ -96,10 +106,9 @@ class AsciiTable
 			// then chuck a '...' on the end of it 
 			if (data[i].Length > headerWidths[i])
 			{
-				//? 7 because space for 3 dots + actual 3 dots + 1 character padding right
-				//? 3 + 3 + 1 = 7
+				//? 4 because 1 character padding on the right, and 3 ...s
 				Debug.WriteLine(data[i]);
-				data[i] = data[i].Substring(headerWidths[i] - 7) + "...";
+				data[i] = data[i].Substring(0, headerWidths[i] - 6) + "...";
 				Debug.WriteLine(data[i]);
 			}
 
