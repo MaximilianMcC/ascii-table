@@ -16,7 +16,17 @@ class AsciiTable
 
 		headers = headings;
 		headerWidths = CalculateHeaderWidths(weights, totalWidth);
+		DrawHeaders();
+	}
 
+	// Draw an ascii table in the centre of the screen
+	public AsciiTable(string[] headings, int[] weights)
+	{
+		totalWidth = Console.WindowWidth - (Console.WindowWidth / 5);
+		xPosition = (Console.WindowWidth - totalWidth) / 2;
+
+		headers = headings;
+		headerWidths = CalculateHeaderWidths(weights, totalWidth);
 		DrawHeaders();
 	}
 
@@ -29,8 +39,6 @@ class AsciiTable
 	{
 		Draw(Slice('└', '─', '┴', '┘'));
 	}
-
-	// TODO: Make constructor to make a centre table
 
 	private int[] CalculateHeaderWidths(int[] headerWeights, int totalWidth)
 	{
